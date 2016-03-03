@@ -10,7 +10,7 @@
     <meta name="author" content="">
     <link rel="icon" href="">
 
-    <title>Blog Template for Bootstrap</title>
+    <title>{{ title }}</title>
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="{% static "core/bootstrap/3.3.5/css/bootstrap.min.css" %}" >
@@ -45,8 +45,8 @@
     <div class="container">
 
       <div class="blog-header">
-        <h1 class="blog-title">The Bootstrap Blog</h1>
-        <p class="lead blog-description">The official example template of creating a blog with Bootstrap.</p>
+        <h1 class="blog-title">{{ title }}</h1>
+        <p class="lead blog-description">{{ subtitle }}</p>
       </div>
 
       <div class="row">

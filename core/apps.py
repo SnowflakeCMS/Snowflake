@@ -8,6 +8,7 @@ class CoreConfig(AppConfig):
     name = 'core'
     settings_fields = {
         "title": "This is a blog title",
+        "subtitle": "This is a sub title",
     }
 
     def __init__(self, app_name, app_module):
@@ -16,7 +17,7 @@ class CoreConfig(AppConfig):
         self.setting_objects = {}
 
     def get_setting_value(self, name):
-        value = self.setting_objects.get(name)
+        value = self.setting_values.get(name)
         if value is not None:
             return value
         else:
@@ -42,3 +43,6 @@ class CoreConfig(AppConfig):
                         self.setting_values[name] = default_val
                         self.setting_objects[name] = value_obj
                         return default_val
+                value = value_obj.get_value()
+                self.setting_values[name] = value
+                return value
