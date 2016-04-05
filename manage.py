@@ -2,19 +2,24 @@
 
 from flask.ext.script import Manager
 from flask.ext.migrate import MigrateCommand, Migrate
-from cfblog2.core.app import get_or_create_app
-from cfblog2 import front, admin
+from cfblog2.core.app import CoreApp
+from cfblog2 import front, admin, db
 
 
 if __name__ == "__main__":
-    core_app = get_or_create_app()
-    # blue print init
-    front.init(core_app)
-    flask_app = core_app.get_flask_app()
-    flask_app.debug = True
-    sql_db = core_app.get_db()
 
-    manager = Manager(flask_app)
-    migrate = Migrate(flask_app, sql_db)
+    app = CoreApp(__name__)
+    app.debug = True
+    db.init_app(app)
+
+    # blue print init
+    front.init(app)
+    app.register_blueprint(front.front)
+
+    admin.init(app)
+    app.register_blueprint(admin.admin, url_prefix="/admin")
+
+    manager = Manager(app)
+    migrate = Migrate(app, db)
     manager.add_command("db", MigrateCommand)
     manager.run()
