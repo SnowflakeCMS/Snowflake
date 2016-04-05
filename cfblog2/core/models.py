@@ -3,8 +3,7 @@
 import enum
 import pickle
 
-from .database import d
-db = get_or_create_app().get_db()
+from cfblog2 import db
 
 
 class Setting(db.Model):
