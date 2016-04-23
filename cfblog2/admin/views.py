@@ -2,6 +2,7 @@
 
 from flask import render_template, redirect, url_for
 from flask import request, current_app, g, session, flash
+from flask.views import View
 
 from . import admin
 from .forms import LoginForm

@@ -7,11 +7,11 @@ from cfblog2 import db
 
 
 class Setting(db.Model):
+    """ SettingModels """
     class TypeEnum(enum.Enum):
         STRING = "str"
         PICKLE = "pik"
         PYTHON = "pyc"
-    """ SettingModels """
     __tablename__ = "setting"
     id = db.Column(db.String(length=256), primary_key=True)
     type = db.Column(db.String(length=16))
