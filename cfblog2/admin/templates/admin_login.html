@@ -1,17 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Login</title>
-</head>
-<body>
-{% from "core_form_helper.html" import render_field %}
-<form method=post action="{{ url_for("admin.login") }}">
-  <dl>
-    {{ render_field(form.username) }}
-    {{ render_field(form.password) }}
-  </dl>
-  <p><input type=submit value="login">
-</form>
-</body>
-</html>
+{% extends "core_bootstrap_base.html" %}
+{% block title %} Login {% endblock %}
+{% block content %}
+    {% from "core_form_helper.html" import render_field %}
+    <form method="post" action="{{ url_for("admin.login") }}">
+      <dl>
+        {{ render_field(form.username) }}
+        {{ render_field(form.password) }}
+      </dl>
+      <p><input type="submit" value="login">
+    </form>
+{% endblock %}
