@@ -5,7 +5,10 @@ from flask.views import View
 
 
 class Resource(View):
+    """Restful resource base class"""
+
     # Standard method of restful API
+    methods = ["GET", "PUT"]
     rest_standard_method = {"get", "post", "delete", "head", "patch"}
 
     def __init__(self):
@@ -13,7 +16,6 @@ class Resource(View):
 
     def dispatch_request(self, *args, **kwargs):
         method_name = request.method.lower()
-        print("-------------", method_name)
         if method_name not in Resource.rest_standard_method:
             raise NotImplementedError("Unsupported http method:%r" % request.method)
 
@@ -21,6 +23,7 @@ class Resource(View):
         if method is None:
             raise NotImplementedError("Resource not implements this method")
 
+        print("----------------->", request.mimetype)
         return method(*args, **kwargs)
 
 

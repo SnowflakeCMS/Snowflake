@@ -10,7 +10,7 @@ class Auth(Resource):
         pass
 
     """Auth API"""
-    def post(self):
+    def post(self, params):
         return "auth"
 
 api.add_url_rule("/auth", view_func=Auth.as_view("auth"))
