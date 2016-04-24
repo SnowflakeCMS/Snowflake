@@ -1,12 +1,13 @@
 # -*- encoding: utf-8 -*-
-
 from flask import render_template, redirect, url_for
 from flask import request, current_app, g, session, flash
-from flask.views import View
+
+from cfblog2.core.models import User
 
 from . import admin
 from .forms import LoginForm
-from .models import User
+
+
 
 LOGIN_STATUS_NONE = 0
 LOGIN_STATUS_SUCCESS = 1
@@ -52,19 +53,3 @@ def logout():
     session.pop("login_status")
     session.pop("login_user_id")
     return "Logout"
-
-
-@admin.route("/")
-def index():
-    return redirect(url_for("admin.dashboard"))
-
-
-@admin.route("/dashboard")
-@login_required
-def dashboard():
-    return "This is a dashboard"
-
-
-@admin.route("/blog/new")
-def blog_new():
-    pass

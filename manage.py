@@ -5,7 +5,7 @@ from flask.ext.script import Manager
 from flask.ext.migrate import MigrateCommand, Migrate
 
 from cfblog2.core.app import CoreApp
-from cfblog2 import front, admin, core, db
+from cfblog2 import front, admin, core, api, db
 
 
 if __name__ == "__main__":
@@ -19,6 +19,9 @@ if __name__ == "__main__":
     # blue print init
     core.init(app)
     app.register_blueprint(core.core)
+
+    api.init(app)
+    app.register_blueprint(api.api, url_prefix="/api")
 
     front.init(app)
     app.register_blueprint(front.front)
