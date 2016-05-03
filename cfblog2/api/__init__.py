@@ -1,7 +1,7 @@
 #
-from cfblog2.restful import RestfulBlueprint
+from cfblog2.restful.flask import FlaskBlueprint
 
-api = RestfulBlueprint("api", __name__)
+api = FlaskBlueprint("api", __name__)
 
 
 def init(app):

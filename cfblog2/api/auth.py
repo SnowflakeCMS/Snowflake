@@ -1,16 +1,20 @@
 # -*- encoding:utf-8 -*-
-from flask import render_template, redirect, url_for
 
-from cfblog2.restful import Resource
+from cfblog2.restful.flask import FlaskResource
+from cfblog2.restful.params import Text, Password
 from . import api
 
 
-class Auth(Resource):
+class Auth(FlaskResource):
+    name = "auth"
+    username = Text()
+    password = Password()
+
     def __init__(self):
-        pass
+        super(Auth, self).__init__()
 
     """Auth API"""
     def post(self, params):
         return "auth"
 
-api.add_url_rule("/auth", view_func=Auth.as_view("auth"))
+api.add_resource("/auth", Auth)
