@@ -1,28 +1,33 @@
 # -*- encoding: utf-8 -*-
 
 from http import HTTPStatus
+
+from flask import make_response
 from flask.views import View
 from flask.globals import request
 from flask import Flask, current_app, Blueprint, abort
 from .resource import Resource
 
 
+# TODO Not inherit with View class, implements view manually
 class FlaskResource(View, Resource):
+    methods = Resource.restful_method
+
     def __init__(self):
         super(View, self).__init__()
 
     def dispatch_request(self, *args, **kwargs):
+        current_app.logger.debug("-------------->")
         method_name = request.method.lower()
-        if method_name not in Resource.rest_standard_method:
+        if method_name not in self.restful_method:
             abort(HTTPStatus.BAD_REQUEST, "Unsupported http method:%r" % request.method)
 
-        method = getattr(self, method_name, None)
-        if method is None:
-            abort(HTTPStatus.NOT_IMPLEMENTED, "Resource not implements this method")
-        # TODO Check mime type and call decode method in Resource
-        result = method(*args, **kwargs)
-        # TODO Decode json
-        return result
+        content = request.get_data(as_text=True)
+        content_mime_type = request.mimetype
+        result_mime_type, result = self.dispatch_call(method_name, content, content_mime_type)
+        response = make_response(result)
+        response.mime_type = result_mime_type
+        return response
 
 
 class FlaskBlueprint(Blueprint):

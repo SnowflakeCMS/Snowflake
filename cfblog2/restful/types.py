@@ -1,22 +1,26 @@
 # -*- encoding: utf-8 -*-
 
 
-class ParamBase(object):
+class TypeBase(object):
     def __init__(self):
         self._name = ""
 
 
-class Text(ParamBase):
+class Dict(TypeBase):
+    pass
+
+
+class String(TypeBase):
     """Normal text field
     """
     pass
 
 
-class Email(Text):
+class Email(String):
     pass
 
 
-class Password(Text):
+class Password(String):
     pass
 
 
