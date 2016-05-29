@@ -5,9 +5,6 @@ from cfblog2.restful.types import String, Password
 from . import api, APIBase, APICallException, RetCode
 
 
-
-
-
 class AuthException(APICallException):
     pass
 
@@ -33,7 +30,8 @@ class Auth(APIBase):
         user = User.query.filter_by(username=p_username, password=p_password).first()
         if user is None:
             self._logger.debug("Auth failed, username=%s", p_username)
-            raise AuthException(RetCode.AUTH_PWD_USER_NOT_MATCH, "Not match")
+            raise AuthException(RetCode.AUTH_PWD_USER_NOT_MATCH, username=p_username)
+
         s = TimedJSONWebSignatureSerializer(self.key, expires_in=self.expires_sec)
         token = s.dumps({"u": p_username}).decode("utf-8")
         self._logger.debug("-------------Token:%s", token)

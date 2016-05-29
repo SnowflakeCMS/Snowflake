@@ -18,7 +18,7 @@ class RetCode(enum.Enum):
     AUTH_PWD_USER_NOT_MATCH = 10101
 
     def __str__(self):
-        return MESSAGE.get(self.value, "No message")
+        return MESSAGE.get(self, "No message")
 
     def get_desc(self):
         return str(self)
@@ -32,5 +32,5 @@ class RetCode(enum.Enum):
 
 MESSAGE = {
     RetCode.OK: "OK",
-    RetCode.AUTH_PWD_USER_NOT_MATCH : "Auth not match",
+    RetCode.AUTH_PWD_USER_NOT_MATCH: "Auth not match, user:{username}",
 }
