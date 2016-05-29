@@ -1,18 +1,29 @@
 # -*- encoding:utf-8 -*-
+from itsdangerous import TimedJSONWebSignatureSerializer
 from cfblog2.core.models import User
-from cfblog2.restful.flask import FlaskResource
 from cfblog2.restful.types import String, Password
-from . import api
+from . import api, APIBase, APICallException, RetCode
 
 
-class Auth(FlaskResource):
+
+
+
+class AuthException(APICallException):
+    pass
+
+
+class Auth(APIBase):
     restful_method = {"post"}
-    name = "auth"
+    name = "Auth"
+    desc = "System auth API"
+    key = None
+    expires_sec = 0
+
     username = String()
     password = Password()
 
-    def __init__(self):
-        super(Auth, self).__init__()
+    def __init__(self, *args, **kwargs):
+        super(Auth, self).__init__(*args, **kwargs)
 
     """Auth API"""
     def post(self, params, *args, **kwargs):
@@ -20,11 +31,17 @@ class Auth(FlaskResource):
         p_password = params["password"]
 
         user = User.query.filter_by(username=p_username, password=p_password).first()
-        # user = User.query.all()[0]
         if user is None:
-            return {"code": 1, "msg": "Not auth", "extra": None}
-        else:
-            return {"code": 2, "msg": "Success", "extra": "This should be token" + repr(user.username)}
+            self._logger.debug("Auth failed, username=%s", p_username)
+            raise AuthException(RetCode.AUTH_PWD_USER_NOT_MATCH, "Not match")
+        s = TimedJSONWebSignatureSerializer(self.key, expires_in=self.expires_sec)
+        token = s.dumps({"u": p_username}).decode("utf-8")
+        self._logger.debug("-------------Token:%s", token)
+        return token
 
+
+def set_config(key, expires_sec = 300):
+    Auth.key = key
+    Auth.expires_sec = expires_sec
 
 api.add_resource("/auth", Auth)
