@@ -13,7 +13,7 @@ class Blog(APIBase):
     need_auth = True
 
     def __init__(self, *args, **kwargs):
-        super(Auth, self).__init__(*args, **kwargs)
+        super(Blog, self).__init__(*args, **kwargs)
 
     """Post blog api"""
     def post(self, params, *args, **kwargs):

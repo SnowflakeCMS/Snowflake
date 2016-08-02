@@ -1,8 +1,8 @@
 # -*- encoding: utf-8 -*-
 import os
 
-from flask.ext.script import Manager
-from flask.ext.migrate import MigrateCommand, Migrate
+from flask_script import Manager
+from flask_migrate import MigrateCommand, Migrate
 
 from cfblog2.core.app import CoreApp
 from cfblog2 import front, admin, core, api, db
