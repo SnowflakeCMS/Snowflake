@@ -5,10 +5,10 @@ import enum
 
 class RetCode(enum.Enum):
     """ General return code define"""
-    OK = 0
-    ERR_INTERNAL_START = 1
+    ERR_INTERNAL_START = 0
     ERR_INTERNAL_END = 999
 
+    OK = 0
     ERR_SYSTEM_START = 1000
     ERR_SYSTEM_END = 9999
 
