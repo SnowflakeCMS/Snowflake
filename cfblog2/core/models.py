@@ -2,7 +2,6 @@
 
 import enum
 import pickle
-
 from cfblog2 import db
 
 

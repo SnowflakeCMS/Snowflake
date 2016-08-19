@@ -23,11 +23,16 @@ class Resource(object, metaclass=ResourceMeta):
     desc = "Resource base class"
 
     def __init__(self, logger):
-        self._logger = logger
+        self.logger_ = logger
 
     def parse_params(self, content, content_mime_type):
-        assert content_mime_type == "application/json", "Unsupported content type"
-        raw_params = json.loads(content)
+        raw_params = None
+        if content_mime_type == "application/json":
+            raw_params = json.loads(content)
+        elif content_mime_type == "":
+            raw_params = None
+        else:
+            self.logger_.warn("Unsupported content type:%s", content_mime_type)
         return raw_params
 
     def parse_result(self, result):
