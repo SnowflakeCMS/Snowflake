@@ -7,3 +7,4 @@ front = Blueprint("front", __name__, static_folder="static", template_folder="te
 
 def init(app):
     from . import views
+    app.register_blueprint(front)

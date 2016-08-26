@@ -16,9 +16,6 @@ class Auth(APIBase):
     key = None
     expires_sec = 0
 
-    username = String()
-    password = Password()
-
     def __init__(self, *args, **kwargs):
         super(Auth, self).__init__(*args, **kwargs)
 
@@ -38,8 +35,9 @@ class Auth(APIBase):
         return token
 
 
-def set_config(key, expires_sec = 300):
+def set_config(key, expires_sec=300):
     Auth.key = key
     Auth.expires_sec = expires_sec
+
 
 api.add_resource("/auth", Auth)

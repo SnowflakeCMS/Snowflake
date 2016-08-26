@@ -5,3 +5,4 @@ core = Blueprint("core", __name__, static_folder="static", template_folder="temp
 
 def init(app):
     from . import models
+    app.register_blueprint(core)

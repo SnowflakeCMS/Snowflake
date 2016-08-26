@@ -3,16 +3,36 @@
 import json
 
 
+class ResourceFilter(object):
+    def __init__(self, sub_patterns="", methods=[]):
+        self.sub_patterns_ = sub_patterns
+        self.methods_ = methods
+
+        self.handle_func_ = None
+
+    def __call__(self, handle_func):
+        self.handle_func_ = handle_func
+        return self
+
+    def get_handle_func(self):
+        return self.handle_func_
+
+
 class ResourceMeta(type):
     def __init__(cls, name, bases, attrs):
         type.__init__(cls, name, bases, attrs)
         cls._unbound_params = {}
+        cls._filters = set()
 
     def __call__(cls, *args, **kwargs):
         return type.__call__(cls, *args, **kwargs)
 
     def __setattr__(cls, key, value):
-        type.__setattr__(cls, key, value)
+        if isinstance(value, ResourceFilter):
+            cls._filters.add(value)
+            type.__setattr__(cls, key, value.get_handle_func())
+        else:
+            type.__setattr__(cls, key, value)
 
 
 class Resource(object, metaclass=ResourceMeta):
@@ -26,6 +46,7 @@ class Resource(object, metaclass=ResourceMeta):
         self.logger_ = logger
 
     def parse_params(self, content, content_mime_type):
+        self.logger_.debug("-----------%s", content)
         raw_params = None
         if content_mime_type == "application/json":
             raw_params = json.loads(content)
@@ -36,9 +57,9 @@ class Resource(object, metaclass=ResourceMeta):
         return raw_params
 
     def parse_result(self, result):
-        return "application/json", json.dumps(result)
+        return "application/json", json.dumps(result, ensure_ascii=False)
 
-    def exec(self, method_type, params, *args, **kwargs):
+    def exec(self, method_type, params, content_mime_type, *args, **kwargs):
         method = getattr(self, method_type, None)
         assert method is not None, "Unimplemented method"
 

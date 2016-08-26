@@ -1,15 +1,15 @@
 # -*- encoding: utf-8 -*-
 
+from cfblog2.restful import Resource, ResourceManager
+from cfblog2.restful.supports.flask import FlaskSupport
 from .ret_code import RetCode
-from cfblog2.restful import Resource
-from cfblog2.restful.flask import FlaskBlueprint
 
-api = FlaskBlueprint("api", __name__)
+flask_app = FlaskSupport("api", __name__)
+api = ResourceManager(flask_app)
 
 
 class APICallException(Exception):
     def __init__(self, code, *args, **kwargs):
-        print("-----------_", code, args, kwargs)
         super(APICallException, self).__init__()
         self._rtc = code
         self._c = code.get_code()
@@ -41,6 +41,8 @@ class APIBase(Resource):
         return result
 
 
-def init(app):
+def init(app, url_prefix):
     from . import auth, blog
     auth.set_config(app.secret_key)
+
+    app.register_blueprint(flask_app, url_prefix=url_prefix)

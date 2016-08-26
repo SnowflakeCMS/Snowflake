@@ -18,16 +18,12 @@ if __name__ == "__main__":
 
     # blue print init
     core.init(app)
-    app.register_blueprint(core.core)
 
-    api.init(app)
-    app.register_blueprint(api.api, url_prefix="/api")
+    api.init(app, url_prefix="/api")
 
     front.init(app)
-    app.register_blueprint(front.front)
 
-    admin.init(app)
-    app.register_blueprint(admin.admin, url_prefix="/admin")
+    admin.init(app, url_prefix="/admin")
 
     manager = Manager(app)
     migrate = Migrate(app, db)

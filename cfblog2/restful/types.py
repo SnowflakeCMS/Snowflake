@@ -24,4 +24,5 @@ class Password(String):
     pass
 
 
-
+class ParamValidator(object):
+    pass
