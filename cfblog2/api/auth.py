@@ -20,7 +20,7 @@ class Auth(APIBase):
         super(Auth, self).__init__(*args, **kwargs)
 
     """Auth API"""
-    @ResourceFilter("/", methods=["post"])
+    @ResourceFilter("", methods=["post"])
     def post(self, params):
         p_username = params["username"]
         p_password = params["password"]

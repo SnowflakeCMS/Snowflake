@@ -24,6 +24,7 @@ class FlaskSupport(Blueprint):
                                                                                       *args,
                                                                                       **kwargs),
                               endpoint="%s#%s" % (res_cls.name, handle_func_name),
+                              strict_slashes=True,
                               **options)
         return __internal_register
 

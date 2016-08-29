@@ -15,13 +15,13 @@ class BlogException(APICallException):
 class Blog(APIBase):
     name = "Blog"
     desc = "Blog resource api"
-    need_auth = True
+    need_auth = False
 
     def __init__(self, *args, **kwargs):
         super(Blog, self).__init__(*args, **kwargs)
 
     """Post blog api"""
-    @ResourceFilter("/", methods=["post"])
+    @ResourceFilter(methods=["post"])
     def new_blog(self, params):
         # TODO use param validator
         new_blog = BlogModel()
@@ -33,7 +33,7 @@ class Blog(APIBase):
         return model_obj_to_dict(new_blog)
 
     """ blog get api"""
-    @ResourceFilter("/", methods=["get"], need_auth=False)
+    @ResourceFilter(methods=["get"])
     def get_list(self, params):
         result = []
         blog_rows = BlogModel.query.all()
@@ -41,7 +41,7 @@ class Blog(APIBase):
             result.append(model_obj_to_dict(b))
         return result
 
-    @ResourceFilter("/<int:blog_id>", methods=["get"], need_auth=False)
+    @ResourceFilter("/<int:blog_id>", methods=["get"])
     def get_one(self, params, blog_id):
         blog = self.query_by_id(blog_id).first()
         if blog is None:
@@ -55,6 +55,18 @@ class Blog(APIBase):
         db.session.commit()
 
         return {"count": delete_count}
+
+    @ResourceFilter("/<int:blog_id>", methods=["patch"])
+    def update_one(self, params, blog_id):
+        blog = self.query_by_id(blog_id).first()
+        if blog is None:
+            return None
+
+        blog.title = params["title"]
+        blog.content = params["content"]
+        blog.slug = params["slug"]
+        db.session.commit()
+
 
     # noinspection PyMethodMayBeStatic
     def query_by_id(self, blog_id):

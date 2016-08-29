@@ -4,7 +4,7 @@ import json
 
 
 class ResourceFilter(object):
-    def __init__(self, sub_pattern="/", methods=[], need_auth=None):
+    def __init__(self, sub_pattern="", methods=[], need_auth=None):
         self.sub_pattern_ = sub_pattern
         self.methods_ = methods
         self.handle_func_ = None
