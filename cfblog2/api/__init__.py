@@ -10,7 +10,7 @@ api = ResourceManager(flask_app)
 
 class APICallException(Exception):
     def __init__(self, code, *args, **kwargs):
-        super(APICallException, self).__init__()
+        super(APICallException, self).__init__(*args, **kwargs)
         self._rtc = code
         self._c = code.get_code()
         self._m = code.get_msg().format(**kwargs)
@@ -20,13 +20,13 @@ class APICallException(Exception):
 
 
 class APIBase(Resource):
-    name = "APIBase"
-    desc = "cfblog2 API base class"
+
+    auth_method = None
 
     def __init__(self, *args, **kwargs):
         super(APIBase, self).__init__(*args, **kwargs)
 
-    def exec(self, method_type, params, *args, **kwargs):
+    def exec(self, *args, **kwargs):
         result = {
             "code": RetCode.OK.get_code(),
             "msg": RetCode.OK.get_msg(),
@@ -34,15 +34,24 @@ class APIBase(Resource):
         }
 
         try:
-            ret = super(APIBase, self).exec(method_type, params, *args, **kwargs)
+            ret = super(APIBase, self).exec(*args, **kwargs)
             result["ret"] = ret
         except APICallException as ce:
             result["code"], result["msg"] = ce.get_code_msg()
         return result
 
+    # noinspection PyMethodMayBeStatic
+    def auth(self, params):
+        if params is None:
+            return False
+        token = params.get("token", None)
+        if token is None:
+            return False
+        return APIBase.auth_method(token)
+
 
 def init(app, url_prefix):
     from . import auth, blog
-    auth.set_config(app.secret_key)
-
+    auth.set_config(app.secret_key, 7200)
+    APIBase.auth_method = auth.auth_method
     app.register_blueprint(flask_app, url_prefix=url_prefix)

@@ -11,8 +11,8 @@ class BlogException(APICallException):
     pass
 
 
+@api.resource("/blog")
 class Blog(APIBase):
-    restful_method = {"post", "get"}
     name = "Blog"
     desc = "Blog resource api"
     need_auth = True
@@ -21,9 +21,8 @@ class Blog(APIBase):
         super(Blog, self).__init__(*args, **kwargs)
 
     """Post blog api"""
-    @ResourceFilter(methods=["post"])
-    def new_blog(self, params, blog_id):
-        assert blog_id is None
+    @ResourceFilter("/", methods=["post"])
+    def new_blog(self, params):
         # TODO use param validator
         new_blog = BlogModel()
         new_blog.title = params["title"]
@@ -34,7 +33,7 @@ class Blog(APIBase):
         return model_obj_to_dict(new_blog)
 
     """ blog get api"""
-    @ResourceFilter(methods=["get"])
+    @ResourceFilter("/", methods=["get"], need_auth=False)
     def get_list(self, params):
         result = []
         blog_rows = BlogModel.query.all()
@@ -42,8 +41,22 @@ class Blog(APIBase):
             result.append(model_obj_to_dict(b))
         return result
 
-    @ResourceFilter("/<int:blog_id>", methods=["get"])
-    def get_one(self, blog_id):
-        pass
+    @ResourceFilter("/<int:blog_id>", methods=["get"], need_auth=False)
+    def get_one(self, params, blog_id):
+        blog = self.query_by_id(blog_id).first()
+        if blog is None:
+            return None
+        else:
+            return model_obj_to_dict(blog)
 
-api.add_resource("/blog", Blog)
+    @ResourceFilter("/<int:blog_id>", methods=["delete"])
+    def delete_one(self, params, blog_id):
+        delete_count = self.query_by_id(blog_id).delete()
+        db.session.commit()
+
+        return {"count": delete_count}
+
+    # noinspection PyMethodMayBeStatic
+    def query_by_id(self, blog_id):
+        query = BlogModel.query.filter_by(id=blog_id)
+        return query

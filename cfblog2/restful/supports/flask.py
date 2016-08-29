@@ -16,33 +16,31 @@ class FlaskSupport(Blueprint):
         super(FlaskSupport, self).__init__(*args, **kwargs)
         self.after_request(self.on_after_each_request)
 
-    def get_url_register(self, res_cls):
-        methods = res_cls.restful_method
-        view_func = FlaskResource.as_view(res_cls.name, res_cls)
-
-        def __internal_register(rule, **options):
+    def get_resource_register(self, res_cls):
+        def __internal_register(rule, handle_func_name, methods, **options):
             self.add_url_rule(rule, methods=methods,
-                              view_func=view_func, **options)
-
+                              view_func=lambda *args, **kwargs: self.dispatch_request(res_cls,
+                                                                                      handle_func_name,
+                                                                                      *args,
+                                                                                      **kwargs),
+                              endpoint="%s#%s" % (res_cls.name, handle_func_name),
+                              **options)
         return __internal_register
 
-    def dispatch_request(self, *args, **kwargs):
+    def dispatch_request(self, res_cls, handle_func_name, *args, **kwargs):
         method_name = request.method.lower()
-        if method_name not in self._res_cls.restful_method:
-            abort(HTTPStatus.BAD_REQUEST, "Unsupported http method:%r" % request.method)
 
-        res = self._res_cls(current_app.logger)
+        res = res_cls(current_app.logger, self)
         content = request.get_data(as_text=True)
         content_mime_type = request.mimetype
-        current_app.logger.debug("-!!!--------------->%s,%s", args, kwargs)
-        result_mime_type, result_str = res.dispatch_call(method_name, content, content_mime_type, *args, **kwargs)
+        result_mime_type, result_str = res.dispatch_call(handle_func_name, method_name, content,
+                                                         content_mime_type, *args, **kwargs)
         response = make_response(result_str)
         response.mime_type = result_mime_type
-        current_app.logger.debug("response:%s", response)
         return response
 
-    # noinspection PyMethodMayBeStatic
-    def on_after_each_request(self, response):
+    @staticmethod
+    def on_after_each_request(response):
         # 临时处理跨域
         h = response.headers
         h["Access-Control-Allow-Origin"] = "*"
@@ -51,3 +49,12 @@ class FlaskSupport(Blueprint):
             h["Access-Control-Allow-Methods"] = h["Allow"]
         h["Access-Control-Allow-Headers"] = "Content-Type"
         return response
+
+    @staticmethod
+    def log_debug(*args, **kwargs):
+        current_app.logger.debug(*args, **kwargs)
+
+    @staticmethod
+    def abort_404(msg=""):
+        abort(HTTPStatus.UNAUTHORIZED, msg)
+
