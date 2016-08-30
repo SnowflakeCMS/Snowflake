@@ -19,12 +19,12 @@ class APICallException(Exception):
         return self._c, self._m
 
 
-class APIBase(Resource):
+class APICore(Resource):
 
     auth_method = None
 
     def __init__(self, *args, **kwargs):
-        super(APIBase, self).__init__(*args, **kwargs)
+        super(APICore, self).__init__(*args, **kwargs)
 
     def exec(self, *args, **kwargs):
         result = {
@@ -34,7 +34,7 @@ class APIBase(Resource):
         }
 
         try:
-            ret = super(APIBase, self).exec(*args, **kwargs)
+            ret = super(APICore, self).exec(*args, **kwargs)
             result["ret"] = ret
         except APICallException as ce:
             result["code"], result["msg"] = ce.get_code_msg()
@@ -47,11 +47,11 @@ class APIBase(Resource):
         token = params.get("token", None)
         if token is None:
             return False
-        return APIBase.auth_method(token)
+        return APICore.auth_method(token)
 
 
 def init(app, url_prefix):
     from . import auth, blog
     auth.set_config(app.secret_key, 7200)
-    APIBase.auth_method = auth.auth_method
+    APICore.auth_method = auth.auth_method
     app.register_blueprint(flask_app, url_prefix=url_prefix)

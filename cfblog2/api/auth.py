@@ -2,7 +2,7 @@
 from itsdangerous import TimedJSONWebSignatureSerializer, BadSignature
 from cfblog2.core.models import User
 from cfblog2.restful.resource import ResourceFilter
-from . import api, APIBase, APICallException, RetCode
+from . import api, APICore, APICallException, RetCode
 
 
 class AuthException(APICallException):
@@ -10,7 +10,7 @@ class AuthException(APICallException):
 
 
 @api.resource("/auth")
-class Auth(APIBase):
+class Auth(APICore):
     name = "Auth"
     desc = "System auth API"
     key = None

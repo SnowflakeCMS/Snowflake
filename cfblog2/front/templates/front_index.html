@@ -1,0 +1,9 @@
+{% extends "front_base.html" %}
+
+{% block content %}
+    {% for blog in blog_list %}
+        <a href="./blog/{{ blog.slug }}/{{ blog.id }}"><h2>{{ blog.title }}</h2></a>
+        <hr/>
+        <p>{{ blog.content }}<p>
+    {% endfor %}
+{% endblock %}

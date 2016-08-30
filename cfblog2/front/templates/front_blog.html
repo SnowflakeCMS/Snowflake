@@ -1,0 +1,7 @@
+{% extends "front_base.html" %}
+
+{% block content %}
+    <a href="./blog/{{ blog.slug }}/{{ blog.id }}"><h2>{{ blog.title }}</h2></a>
+    <hr/>
+    <p>{{ blog.content }}<p>
+{% endblock %}

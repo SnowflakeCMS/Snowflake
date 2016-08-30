@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 from cfblog2 import db
-from cfblog2.api import APIBase, APICallException
+from cfblog2.api import APICore, APICallException
 from cfblog2.core.models import Blog as BlogModel
 from cfblog2.core.utils import model_obj_to_dict
 from cfblog2.restful.resource import ResourceFilter
@@ -12,7 +12,7 @@ class BlogException(APICallException):
 
 
 @api.resource("/blog")
-class Blog(APIBase):
+class Blog(APICore):
     name = "Blog"
     desc = "Blog resource api"
     need_auth = False
@@ -66,7 +66,6 @@ class Blog(APIBase):
         blog.content = params["content"]
         blog.slug = params["slug"]
         db.session.commit()
-
 
     # noinspection PyMethodMayBeStatic
     def query_by_id(self, blog_id):
