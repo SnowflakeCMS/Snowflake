@@ -2,7 +2,7 @@
 
 {% block content %}
     {% for blog in blog_list %}
-        <a href="./blog/{{ blog.slug }}/{{ blog.id }}"><h2>{{ blog.title }}</h2></a>
+        <a href="{{ blog | url_for_blog }}"><h2>{{ blog.title }}</h2></a>
         <hr/>
         <p>{{ blog.content }}<p>
     {% endfor %}
