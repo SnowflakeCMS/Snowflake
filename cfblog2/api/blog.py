@@ -22,7 +22,7 @@ class Blog(APICore):
 
     """Post blog api"""
     @ResourceFilter(methods=["post"])
-    def new_blog(self, params):
+    def create(self, params):
         # TODO use param validator
         new_blog = BlogModel()
         new_blog.title = params["title"]
@@ -34,7 +34,7 @@ class Blog(APICore):
 
     """ blog get api"""
     @ResourceFilter(methods=["get"])
-    def get_list(self, params):
+    def retrieve_all(self, params):
         result = []
         blog_rows = BlogModel.query.all()
         for b in blog_rows:
@@ -42,7 +42,7 @@ class Blog(APICore):
         return result
 
     @ResourceFilter("/<int:blog_id>", methods=["get"])
-    def get_one(self, params, blog_id):
+    def retrieve_one(self, params, blog_id):
         blog = self.query_by_id(blog_id).first()
         if blog is None:
             return None
@@ -66,8 +66,8 @@ class Blog(APICore):
         blog.content = params["content"]
         blog.slug = params["slug"]
         db.session.commit()
+        return model_obj_to_dict(blog)
 
     # noinspection PyMethodMayBeStatic
     def query_by_id(self, blog_id):
-        query = BlogModel.query.filter_by(id=blog_id)
-        return query
+        return BlogModel.query.filter_by(id=blog_id)

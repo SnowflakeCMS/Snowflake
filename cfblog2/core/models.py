@@ -2,6 +2,9 @@
 
 import enum
 import pickle
+
+from sqlalchemy.orm import relationship
+
 from cfblog2 import db
 
 
@@ -43,6 +46,10 @@ class Blog(db.Model):
     slug = db.Column(db.String(length=256))
     title = db.Column(db.Unicode(length=512))
     content = db.Column(db.UnicodeText)
+    category_id = db.Column(db.INTEGER, db.ForeignKey("category.id"))
+
+    category = relationship("Category", uselist=False, back_populates="blog")
+
 
 
 class Comment(db.Model):
@@ -57,3 +64,6 @@ class Category(db.Model):
     """
     __table__name = "category"
     id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(length=256))
+    blog = relationship("Blog", back_populates="category")
+

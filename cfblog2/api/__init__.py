@@ -51,7 +51,7 @@ class APICore(Resource):
 
 
 def init(app, url_prefix):
-    from . import auth, blog
+    from . import auth, blog, category
     auth.set_config(app.secret_key, 7200)
     APICore.auth_method = auth.auth_method
     app.register_blueprint(flask_app, url_prefix=url_prefix)
