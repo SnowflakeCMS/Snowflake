@@ -9,8 +9,8 @@ api = ResourceManager(flask_app)
 
 
 class APICallException(Exception):
-    def __init__(self, code, *args, **kwargs):
-        super(APICallException, self).__init__(*args, **kwargs)
+    def __init__(self, code, **kwargs):
+        super(APICallException, self).__init__()
         self._rtc = code
         self._c = code.get_code()
         self._m = code.get_msg().format(**kwargs)
