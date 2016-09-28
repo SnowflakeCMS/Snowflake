@@ -46,10 +46,9 @@ class Blog(db.Model):
     slug = db.Column(db.String(length=256))
     title = db.Column(db.Unicode(length=512))
     content = db.Column(db.UnicodeText)
-    category_id = db.Column(db.INTEGER, db.ForeignKey("category.id"))
+    category_id = db.Column(db.INTEGER, db.ForeignKey("category.id"), nullable=False)
 
-    category = relationship("Category", uselist=False, back_populates="blog")
-
+    rel_category = db.relationship("Category", back_populates="rel_blogs")
 
 
 class Comment(db.Model):
@@ -65,5 +64,5 @@ class Category(db.Model):
     __table__name = "category"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(length=256))
-    blog = relationship("Blog", back_populates="category")
+    rel_blogs = db.relationship("Blog", back_populates="rel_category")
 

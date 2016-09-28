@@ -10,7 +10,7 @@ from cfblog2 import front, admin, core, api, db
 
 if __name__ == "__main__":
     basedir = os.path.abspath(os.path.dirname(__file__))
-    app = CoreApp(db, basedir, "cfblog2")
+    app = CoreApp(db, basedir, "cfblog2", static_folder=None)
     # TODO 使用Config配置创建
     app.secret_key = "A0Zr98j/3yX R~XHH!jmN]LWX/,?RT"
     app.debug = True

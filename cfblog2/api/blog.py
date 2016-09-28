@@ -28,6 +28,7 @@ class Blog(APICore):
         new_blog.title = params["title"]
         new_blog.content = params["content"]
         new_blog.slug = params["slug"]
+        new_blog.category_id = params["category"]
         db.session.add(new_blog)
         db.session.commit()
         return model_obj_to_dict(new_blog)
