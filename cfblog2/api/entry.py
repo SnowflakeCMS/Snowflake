@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 from cfblog2 import db
 from cfblog2.api import APICore, APICallException
-from cfblog2.core.models import Blog as BlogModel
+from cfblog2.core.models import Entry as EntryModel
 from cfblog2.core.utils import model_obj_to_dict
 from cfblog2.restful.resource import ResourceFilter
 from . import api
@@ -12,19 +12,19 @@ class BlogException(APICallException):
 
 
 @api.resource("/blog")
-class Blog(APICore):
+class Entry(APICore):
     name = "Blog"
     desc = "Blog resource api"
     need_auth = False
 
     def __init__(self, *args, **kwargs):
-        super(Blog, self).__init__(*args, **kwargs)
+        super(Entry, self).__init__(*args, **kwargs)
 
     """Post blog api"""
     @ResourceFilter(methods=["post"])
     def create(self, params):
         # TODO use param validator
-        new_blog = BlogModel()
+        new_blog = EntryModel()
         new_blog.title = params["title"]
         new_blog.content = params["content"]
         new_blog.slug = params["slug"]
@@ -36,7 +36,7 @@ class Blog(APICore):
     @ResourceFilter(methods=["get"])
     def retrieve_all(self, params):
         result = []
-        blog_rows = BlogModel.query.all()
+        blog_rows = EntryModel.query.all()
         for b in blog_rows:
             result.append(model_obj_to_dict(b))
         return result
@@ -70,4 +70,4 @@ class Blog(APICore):
 
     # noinspection PyMethodMayBeStatic
     def query_by_id(self, blog_id):
-        return BlogModel.query.filter_by(id=blog_id)
+        return EntryModel.query.filter_by(id=blog_id)

@@ -3,7 +3,7 @@ from cfblog2 import db
 from cfblog2.api import APICallException, APICore
 from cfblog2.core.utils import model_obj_to_dict
 from cfblog2.restful.resource import ResourceFilter
-from cfblog2.core.models import Category as CategoryModel
+from cfblog2.core.models import Container as ContainerModel
 from . import api
 
 
@@ -11,19 +11,19 @@ class CategoryException(APICallException):
     pass
 
 
-@api.resource("/category")
-class Category(APICore):
-    name = "Category"
-    desc = "Category api"
+@api.resource("/container")
+class Container(APICore):
+    name = "Container"
+    desc = "Container API"
     need_auth = False
 
     def __init__(self, *args, **kwargs):
-        super(Category, self).__init__(*args, **kwargs)
+        super(Container, self).__init__(*args, **kwargs)
 
     # Get category list
     @ResourceFilter(methods=["get"])
     def retrieve_all(self, params):
-        cat_rows = CategoryModel.query.all()
+        cat_rows = ContainerModel.query.all()
         result = []
         for c in cat_rows:
             result.append(model_obj_to_dict(c))
@@ -32,7 +32,7 @@ class Category(APICore):
     @ResourceFilter(methods=["post"])
     def create(self, params):
         name = params["name"]
-        new_cat = CategoryModel()
+        new_cat = ContainerModel()
         new_cat.name = name
         db.session.add(new_cat)
         db.session.commit()
@@ -62,4 +62,4 @@ class Category(APICore):
 
     # noinspection PyMethodMayBeStatic
     def query_by_id(self, category_id):
-        return CategoryModel.query.filter_by(id=category_id)
+        return ContainerModel.query.filter_by(id=category_id)
