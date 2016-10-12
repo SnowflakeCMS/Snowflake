@@ -76,7 +76,7 @@ class Resource(object, metaclass=ResourceMeta):
         raw_params = None
         if content_mime_type == "application/json":
             raw_params = json.loads(content)
-        elif content_mime_type == "":
+        elif content_mime_type == "" or content_mime_type == "text/plain":
             raw_params = None
         else:
             self.logger_.warn("Unsupported content type:%s", content_mime_type)

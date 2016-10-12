@@ -38,7 +38,7 @@ class User(db.Model):
     password = db.Column(db.Unicode(length=128))
 
 
-class Blog(db.Model):
+class Entry(db.Model):
     """ BlogModel
     """
     __tablename__ = "blog"
@@ -46,24 +46,13 @@ class Blog(db.Model):
     slug = db.Column(db.String(length=256))
     title = db.Column(db.Unicode(length=512))
     content = db.Column(db.UnicodeText)
-    category_id = db.Column(db.INTEGER, db.ForeignKey("category.id"))
-
-    category = relationship("Category", uselist=False, back_populates="blog")
 
 
-
-class Comment(db.Model):
-    """ CommentModel
-    """
-    __tablename__ = "comment"
-    id = db.Column(db.Integer, primary_key=True)
-
-
-class Category(db.Model):
+class Container(db.Model):
     """ Category model
     """
     __table__name = "category"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(length=256))
-    blog = relationship("Blog", back_populates="category")
+    # blog = relationship("Blog", back_populates="category")
 

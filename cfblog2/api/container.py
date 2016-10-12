@@ -7,7 +7,7 @@ from cfblog2.core.models import Container as ContainerModel
 from . import api
 
 
-class CategoryException(APICallException):
+class ContainerException(APICallException):
     pass
 
 
