@@ -38,16 +38,6 @@ class User(db.Model):
     password = db.Column(db.Unicode(length=128))
 
 
-class Entry(db.Model):
-    """ BlogModel
-    """
-    __tablename__ = "blog"
-    id = db.Column(db.Integer, primary_key=True)
-    slug = db.Column(db.String(length=256))
-    title = db.Column(db.Unicode(length=512))
-    content = db.Column(db.UnicodeText)
-
-
 class Container(db.Model):
     """ Category model
     """
@@ -56,3 +46,31 @@ class Container(db.Model):
     name = db.Column(db.String(length=256))
     # blog = relationship("Blog", back_populates="category")
 
+
+class EntryType(enum.IntEnum):
+    BASE = 1
+    ARTICLE = 2
+
+
+class Entry(db.Model):
+    """ BaseEntry
+    """
+    __tablename__ = "entry"
+    id = db.Column(db.Integer, primary_key=True)
+    user_type = db.Column(db.Enum(EntryType))
+    __mapper_args__ = {
+        'polymorphic_identity': EntryType.BASE,
+        'polymorphic_on': user_type
+    }
+
+
+class ArticleEntry(Entry):
+    """Article Entry"""
+    __tablename__ = "article"
+    id = db.Column(db.Integer, db.ForeignKey("entry.id"), primary_key=True)
+    slug = db.Column(db.String(length=256))
+    title = db.Column(db.Unicode(length=512))
+    content = db.Column(db.UnicodeText)
+    __mapper_args__ = {
+        "polymorphic_identity": EntryType.ARTICLE
+    }
