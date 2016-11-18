@@ -19,4 +19,4 @@ class BlogView(CoreView):
             "blog": blog,
         }
 
-        return render_template("../themes/cfblog2/templates/front_blog.html", **context)
+        return render_template("front_blog.html", **context)

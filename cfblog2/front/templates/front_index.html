@@ -2,8 +2,9 @@
 
 {% block content %}
     {% for blog in blog_list %}
-        <a href="{{ blog | url_for_blog }}"><h2>{{ blog.title }}</h2></a>
-        <hr/>
-        <p>{{ blog.content }}<p>
+        <div>
+            <a href="{{ blog | url_for_blog }}"><h2>{{ blog.title }}</h2></a>
+            <p>{{ blog.content }}<p>
+        </div>
     {% endfor %}
 {% endblock %}
