@@ -57,10 +57,10 @@ class Entry(db.Model):
     """
     __tablename__ = "entry"
     id = db.Column(db.Integer, primary_key=True)
-    user_type = db.Column(db.Enum(EntryType))
+    entry_type = db.Column(db.Enum(EntryType))
     __mapper_args__ = {
         'polymorphic_identity': EntryType.BASE,
-        'polymorphic_on': user_type
+        'polymorphic_on': entry_type
     }
 
 
