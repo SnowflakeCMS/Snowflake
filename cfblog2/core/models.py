@@ -50,6 +50,7 @@ class Container(db.Model):
 class EntryType(enum.IntEnum):
     BASE = 1
     ARTICLE = 2
+    COMMENT = 3
 
 
 class Entry(db.Model):
@@ -57,10 +58,11 @@ class Entry(db.Model):
     """
     __tablename__ = "entry"
     id = db.Column(db.Integer, primary_key=True)
-    user_type = db.Column(db.Enum(EntryType))
+    entry_type = db.Column(db.Enum(EntryType))
+    create_at = db.Column(db.DateTime)
     __mapper_args__ = {
         'polymorphic_identity': EntryType.BASE,
-        'polymorphic_on': user_type
+        'polymorphic_on': entry_type
     }
 
 
@@ -74,3 +76,24 @@ class ArticleEntry(Entry):
     __mapper_args__ = {
         "polymorphic_identity": EntryType.ARTICLE
     }
+
+
+class CommentEntry(Entry):
+    """Comment entry"""
+    __tablename__ = "comment"
+    id = db.Column(db.Integer, db.ForeignKey("entry.id"), primary_key=True)
+    content = db.Column(db.UnicodeText)
+    __mapper_args__ = {
+        "polymorphic_identity": EntryType.COMMENT
+    }
+
+
+class Linking(db.Model):
+    """Represent one-way linking[form -> to]"""
+    __tablename__ = "linking"
+    id = db.Column(db.Integer, primary_key=True)
+    rel_from = db.Column(db.Integer)
+    rel_to = db.Column(db.Integer)
+
+
+
