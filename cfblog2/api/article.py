@@ -28,6 +28,8 @@ class Article(APICore):
         new_article.title = params["title"]
         new_article.content = params["content"]
         new_article.slug = params["slug"]
+        content_format = params.get("format", ArticleModel.ArticleFormat.PlainText)
+        new_article.content_format = content_format
         db.session.add(new_article)
         db.session.commit()
         return model_obj_to_dict(new_article)

@@ -1,9 +1,7 @@
 # -*- encoding: utf-8 -*-
-
+import datetime
 import enum
 import pickle
-
-from sqlalchemy.orm import relationship
 
 from cfblog2 import db
 
@@ -59,7 +57,7 @@ class Entry(db.Model):
     __tablename__ = "entry"
     id = db.Column(db.Integer, primary_key=True)
     entry_type = db.Column(db.Enum(EntryType))
-    create_at = db.Column(db.DateTime)
+    create_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     __mapper_args__ = {
         'polymorphic_identity': EntryType.BASE,
         'polymorphic_on': entry_type
@@ -67,11 +65,17 @@ class Entry(db.Model):
 
 
 class ArticleEntry(Entry):
+    class ArticleFormat(enum.IntEnum):
+        PlainText = 1
+        Markdown = 2
+        RestructuredText = 3
+
     """Article Entry"""
     __tablename__ = "article"
     id = db.Column(db.Integer, db.ForeignKey("entry.id"), primary_key=True)
     slug = db.Column(db.String(length=256))
     title = db.Column(db.Unicode(length=512))
+    content_format = db.Column(db.Enum(ArticleFormat))
     content = db.Column(db.UnicodeText)
     __mapper_args__ = {
         "polymorphic_identity": EntryType.ARTICLE
