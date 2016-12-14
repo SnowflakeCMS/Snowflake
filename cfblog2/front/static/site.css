@@ -1,24 +1,24 @@
-body {
-    padding: 0px;
-    margin: 0px;
-}
+/*body {*/
+    /*padding: 0px;*/
+    /*margin: 0px;*/
+/*}*/
 
-header {
-}
-header h1 {
-    display: block;
-    float: left;
-    margin: 0px 0px 0px 5%;
-}
-header nav {
-    float: left;
-    margin: 0px 0px 0px 10%;
-}
+/*header {*/
+/*}*/
+/*header h1 {*/
+    /*display: block;*/
+    /*float: left;*/
+    /*margin: 0px 0px 0px 5%;*/
+/*}*/
+/*header nav {*/
+    /*float: left;*/
+    /*margin: 0px 0px 0px 10%;*/
+/*}*/
 
-header nav ul li {
-    display: inline;
-}
+/*header nav ul li {*/
+    /*display: inline;*/
+/*}*/
 
-#content {
-    clear:both;
-}
+/*#content {*/
+    /*clear:both;*/
+/*}*/
