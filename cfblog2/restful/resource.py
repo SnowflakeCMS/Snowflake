@@ -92,7 +92,7 @@ class Resource(object, metaclass=ResourceMeta):
         is_need_auth = method.get_need_auth()
 
         if is_need_auth and not self.auth(params):
-            return self.app_.abort_404("Resource auth failed")
+            return self.app_.abort_403("Resource auth failed")
 
         # TODO Check mime type and call decode method in Resource
         result = handle_func(self, params, *args, **kwargs)
@@ -113,6 +113,10 @@ class Resource(object, metaclass=ResourceMeta):
 
     def log_error(self, *args, **kwargs):
         return self.logger_.error(*args, **kwargs)
+
+    # Override
+    def auth(self, params):
+        return True
 
     @classmethod
     def get_filters(cls):

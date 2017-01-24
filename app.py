@@ -2,6 +2,7 @@
 import os
 
 from flask_migrate import Migrate
+from tools
 from cfblog2.core.app import CoreApp
 from cfblog2 import front, admin, core, api, db
 
@@ -23,3 +24,6 @@ front.init(app)
 admin.init(app, url_prefix="/admin")
 
 migrate = Migrate(app, db)
+
+
+

@@ -56,6 +56,6 @@ class FlaskSupport(Blueprint):
         current_app.logger.debug(*args, **kwargs)
 
     @staticmethod
-    def abort_404(msg=""):
+    def abort_403(msg=""):
         abort(HTTPStatus.UNAUTHORIZED, msg)
 
