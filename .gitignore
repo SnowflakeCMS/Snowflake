@@ -3,3 +3,4 @@
 .idea
 db.sqlite
 migrations/
+cfblog2/tools/cfbm/config.py

@@ -5,8 +5,9 @@
 
 fetcher = {
     "host": "localhost",
-    "user": "typecho",
-    "password": "123",
-    "db": "typecho",
+    "user": "dummy_user",
+    "password": "dummy_password",
+    "db": "db",
     "charset": "utf8",
+    "port": 3306,
 }

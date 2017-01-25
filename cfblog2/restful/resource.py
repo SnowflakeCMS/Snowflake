@@ -5,38 +5,38 @@ import json
 
 class ResourceFilter(object):
     def __init__(self, sub_pattern="", methods=[], need_auth=None):
-        self.sub_pattern_ = sub_pattern
-        self.methods_ = methods
-        self.handle_func_ = None
-        self.need_auth_ = need_auth
-        self.name_ = None
+        self.sub_pattern = sub_pattern
+        self.methods = methods
+        self.handle_func = None
+        self.need_auth = need_auth
+        self.name = None
 
     def __call__(self, handle_func):
-        self.handle_func_ = handle_func
+        self.handle_func = handle_func
         return self
 
     def get_name(self):
-        return self.name_
+        return self.name
 
     def set_name(self, name):
-        self.name_ = name
+        self.name = name
 
     def get_handle_func(self):
-        return self.handle_func_
+        return self.handle_func
 
     def get_sub_pattern(self):
-        return self.sub_pattern_
+        return self.sub_pattern
 
     def get_methods(self):
-        return self.methods_
+        return self.methods
 
     def set_need_auth_from_resource(self, need_auth):
-        if self.need_auth_ is not None:
+        if self.need_auth is not None:
             return
-        self.need_auth_ = need_auth
+        self.need_auth = need_auth
 
     def get_need_auth(self):
-        return self.need_auth_ is True
+        return self.need_auth is True
 
 
 class ResourceMeta(type):
@@ -68,18 +68,18 @@ class Resource(object, metaclass=ResourceMeta):
     _filters = None
 
     def __init__(self, logger, app):
-        self.logger_ = logger
-        self.app_ = app
+        self.logger = logger
+        self.app = app
 
     def parse_params(self, content, content_mime_type):
-        self.logger_.debug("-----------%s", content)
+        self.logger.debug("-----------%s", content)
         raw_params = None
         if content_mime_type == "application/json":
             raw_params = json.loads(content)
         elif content_mime_type == "" or content_mime_type == "text/plain":
             raw_params = None
         else:
-            self.logger_.warn("Unsupported content type:%s", content_mime_type)
+            self.logger.warn("Unsupported content type:%s", content_mime_type)
         return raw_params
 
     def parse_result(self, result):
@@ -92,7 +92,7 @@ class Resource(object, metaclass=ResourceMeta):
         is_need_auth = method.get_need_auth()
 
         if is_need_auth and not self.auth(params):
-            return self.app_.abort_403("Resource auth failed")
+            return self.app.abort_403("Resource auth failed")
 
         # TODO Check mime type and call decode method in Resource
         result = handle_func(self, params, *args, **kwargs)
@@ -106,13 +106,13 @@ class Resource(object, metaclass=ResourceMeta):
         return result_mime_type, result_str
 
     def log_debug(self, *args, **kwargs):
-        return self.logger_.debug(*args, **kwargs)
+        return self.logger.debug(*args, **kwargs)
 
     def log_info(self, *args, **kwargs):
-        return self.logger_.info(*args, **kwargs)
+        return self.logger.info(*args, **kwargs)
 
     def log_error(self, *args, **kwargs):
-        return self.logger_.error(*args, **kwargs)
+        return self.logger.error(*args, **kwargs)
 
     # Override
     def auth(self, params):

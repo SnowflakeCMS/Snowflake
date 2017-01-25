@@ -14,8 +14,9 @@ front = Blueprint("front", __name__,
 def init(app):
     # TODO Maybe export url configure to root config?
     app.add_url_rule("/", view_func=IndexView.as_view("IndexView"))
-    app.add_url_rule("/blog/<string:slug>/<int:blog_id>", view_func=BlogView.as_view("BlogView"))
+    app.add_url_rule("/blog/<int:blog_id>/<string:slug>", view_func=BlogView.as_view("BlogView"))
 
     front.add_app_template_filter(jinja_filters.url_for_blog)
     front.add_app_template_filter(jinja_filters.url_for_theme)
+    front.add_app_template_filter(jinja_filters.markdown_render)
     app.register_blueprint(front)

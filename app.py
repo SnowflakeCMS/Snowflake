@@ -2,10 +2,10 @@
 import os
 
 from flask_migrate import Migrate
-from tools
-from cfblog2.core.app import CoreApp
-from cfblog2 import front, admin, core, api, db
 
+from cfblog2 import front, admin, core, api, db
+from cfblog2.core.app import CoreApp
+from cfblog2.tools import cfbm
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 app = CoreApp(db, basedir, "cfblog2", static_folder=None)
@@ -25,5 +25,6 @@ admin.init(app, url_prefix="/admin")
 
 migrate = Migrate(app, db)
 
+cfbm.init(app)
 
 

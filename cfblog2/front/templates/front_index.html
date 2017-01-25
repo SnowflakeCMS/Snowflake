@@ -4,7 +4,8 @@
     {% for blog in blog_list %}
         <div>
             <a href="{{ blog | url_for_blog }}"><h2>{{ blog.title }}</h2></a>
-            <p>{{ blog.content }}<p>
+            {% autoescape false %} <p>{{ blog.content | markdown_render }}<p> {% endautoescape %}
+            <hr/>
         </div>
     {% endfor %}
 {% endblock %}
