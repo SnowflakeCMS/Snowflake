@@ -9,6 +9,7 @@ def url_for_blog(obj):
 def url_for_theme(filename):
     return url_for("front.static", filename=filename)
 
+
 def markdown_render(content):
     import CommonMark
     parser = CommonMark.Parser()

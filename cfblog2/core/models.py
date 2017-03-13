@@ -1,7 +1,6 @@
 # -*- encoding: utf-8 -*-
 import datetime
 import enum
-import pickle
 
 from cfblog2 import db
 
@@ -36,19 +35,11 @@ class User(db.Model):
     password = db.Column(db.Unicode(length=128))
 
 
-class Container(db.Model):
-    """ Category model
-    """
-    __table__name = "category"
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(length=256))
-    # blog = relationship("Blog", back_populates="category")
-
-
 class EntryType(enum.IntEnum):
-    BASE = 1
-    ARTICLE = 2
-    COMMENT = 3
+    Base = 1
+    Article = 2
+    EntrySet = 3
+    Comment = 4
 
 
 class Entry(db.Model):
@@ -59,7 +50,7 @@ class Entry(db.Model):
     entry_type = db.Column(db.Enum(EntryType))
     create_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     __mapper_args__ = {
-        'polymorphic_identity': EntryType.BASE,
+        'polymorphic_identity': EntryType.Base,
         'polymorphic_on': entry_type
     }
 
@@ -78,7 +69,18 @@ class ArticleEntry(Entry):
     content_format = db.Column(db.Enum(ArticleFormat))
     content = db.Column(db.UnicodeText)
     __mapper_args__ = {
-        "polymorphic_identity": EntryType.ARTICLE
+        "polymorphic_identity": EntryType.Article
+    }
+
+
+class EntrySet(Entry):
+    """ Category model
+    """
+    __table__name = "set"
+    id = db.Column(db.Integer, db.ForeignKey("entry.id"), primary_key=True)
+    name = db.Column(db.String(length=256))
+    __mapper_args__ = {
+        "polymorphic_identity": EntryType.EntrySet
     }
 
 
@@ -88,14 +90,20 @@ class CommentEntry(Entry):
     id = db.Column(db.Integer, db.ForeignKey("entry.id"), primary_key=True)
     content = db.Column(db.UnicodeText)
     __mapper_args__ = {
-        "polymorphic_identity": EntryType.COMMENT
+        "polymorphic_identity": EntryType.Comment
     }
+
+
+class LinkingType(enum.IntEnum):
+    Normal = 1
+    Set = 2
 
 
 class Linking(db.Model):
     """Represent one-way linking[form -> to]"""
     __tablename__ = "linking"
     id = db.Column(db.Integer, primary_key=True)
+    rel_type = db.Column(db.Enum(LinkingType), default=LinkingType.Normal)
     rel_from = db.Column(db.Integer)
     rel_to = db.Column(db.Integer)
 

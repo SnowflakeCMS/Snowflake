@@ -2,10 +2,8 @@
 
 from http import HTTPStatus
 from flask import make_response
-from flask.views import View
 from flask.globals import request
-from flask import Flask, current_app, Blueprint, abort
-from cfblog2.restful.resource import Resource
+from flask import current_app, Blueprint, abort
 
 
 class FlaskSupport(Blueprint):

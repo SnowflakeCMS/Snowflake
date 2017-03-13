@@ -1,5 +1,4 @@
 # -*- encoding: utf-8 -*-
-from flask import render_template
 
 from cfblog2.core.models import ArticleEntry as ArticleModel
 from cfblog2.core.view import CoreView
@@ -18,6 +17,6 @@ class IndexView(CoreView):
             "blog_list": blog_list
         }
         log_debug("Context:%s", context)
-        return render_template("front_index.html", title="博客中文标题", **context)
+        return self.render_template("front_index.html", **context)
 
 

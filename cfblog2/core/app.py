@@ -1,6 +1,12 @@
 import enum
 import os
 from flask import Flask
+from .models import Setting as SettingModel
+
+
+class SettingCacheManager(object):
+    def __init__(self):
+        self._setting = {}
 
 
 class CoreApp(Flask):

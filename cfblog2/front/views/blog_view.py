@@ -14,7 +14,7 @@ class BlogView(CoreView):
         blog = ArticleModel.query.filter_by(id=blog_id).first()
         if blog is None:
             log_info("Blog not found, id:%s, slug:%s", blog_id, slug)
-            self.abort(HTTPStatus.NOT_FOUND)
+            self.abort_with_code(HTTPStatus.NOT_FOUND, "Blog not found")
         context = {
             "blog": blog,
         }

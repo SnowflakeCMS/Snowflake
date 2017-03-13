@@ -7,6 +7,7 @@ from cfblog2 import front, admin, core, api, db
 from cfblog2.core.app import CoreApp
 from cfblog2.tools import cfbm
 
+
 basedir = os.path.abspath(os.path.dirname(__file__))
 app = CoreApp(db, basedir, "cfblog2", static_folder=None)
 # TODO 使用Config配置创建

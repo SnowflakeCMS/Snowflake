@@ -69,7 +69,7 @@ class TypechoFetcher(ContentFetcher):
 
     def get_all_articles(self):
         cursor = self.mysql_connection.cursor()
-        cursor.execute("select title, text, slug from %s" % self._get_table_name("contents"))
+        cursor.execute("select title, text, slug from %s where type='post'" % self._get_table_name("contents"))
         return cursor.fetchall()
 
     def tear_down(self):
@@ -97,14 +97,14 @@ class BlogMigrate(object):
         self.logger.info("Start migrating articles")
         articles = self.fetcher.get_all_articles()
         for article in articles:
-            self.logger.debug("---------Title:%s", article[2])
+            self.logger.debug("Importing article, title:%s", article[0])
             a = ArticleModel()
             a.title = article[0]
-            a.content = article[1]
+            a.content = article[1].replace("<!--markdown-->", "")
             a.slug = article[2]
-            a.content_format = ArticleModel.ArticleFormat.PlainText
+            a.content_format = ArticleModel.ArticleFormat.Markdown
             db.session.add(a)
-            db.session.commit()
+        db.session.commit()
 
 
 
