@@ -10,8 +10,10 @@ from cfblog2.tools.cfbm.migrate import *
 
 @click.command("bm", short_help="Migrate other blog db to cfblog")
 def run_command():
-    from . import config
-    fetcher = TypechoFetcher(config.fetcher)
+    from flask import current_app
+    migrate_config = current_app.snowflake_config["TOOLS_MIGRATE"]
+    print(migrate_config)
+    fetcher = TypechoFetcher(migrate_config["FETCHER"])
     bm = BlogMigrate(fetcher)
     bm.start()
     bm.finish()

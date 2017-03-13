@@ -2,19 +2,15 @@
 import os
 
 from flask_migrate import Migrate
-
 from cfblog2 import front, core, api, db
 from cfblog2.core.app import CoreApp
 from cfblog2.tools import cfbm
 
 
-def create_app(conf_preset, conf_override):
-    basedir = os.path.abspath(os.path.dirname(__file__))
-    new_app = CoreApp(db, basedir, "cfblog2", static_folder=None)
-    new_app.config
-    # TODO 使用Config配置创建
-    new_app.secret_key = "A0Zr98j/3yX R~XHH!jmN]LWX/,?RT"
-    new_app.debug = True
+def create_app(py_conf_path):
+
+    new_app = CoreApp(py_conf_path, db, __name__, static_folder=None)
+
     db.init_app(new_app)
 
     # blue print init
@@ -29,6 +25,7 @@ def create_app(conf_preset, conf_override):
     cfbm.init(new_app)
     return new_app
 
-create_app()
+
+app = create_app("app_config.py")
 
 

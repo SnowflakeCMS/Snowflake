@@ -51,10 +51,6 @@ class APICore(Resource):
 
 
 def init(app, url_prefix):
-<<<<<<< HEAD
-    # from . import auth, article, container
-=======
->>>>>>> 6f303497120a658a006d64945a8bb2820898af0b
     from . import auth, article
     auth.set_config(app.secret_key, 7200)
     APICore.auth_method = auth.auth_method
