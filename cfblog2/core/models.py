@@ -36,15 +36,6 @@ class User(db.Model):
     password = db.Column(db.Unicode(length=128))
 
 
-class Container(db.Model):
-    """ Category model
-    """
-    __table__name = "category"
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(length=256))
-    # blog = relationship("Blog", back_populates="category")
-
-
 class EntryType(enum.IntEnum):
     BASE = 1
     ARTICLE = 2

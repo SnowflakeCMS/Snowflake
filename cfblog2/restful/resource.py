@@ -72,14 +72,14 @@ class Resource(object, metaclass=ResourceMeta):
         self.app = app
 
     def parse_params(self, content, content_mime_type):
-        self.logger.debug("-----------%s", content)
+        self.log_debug("-----------%s", content)
         raw_params = None
         if content_mime_type == "application/json":
             raw_params = json.loads(content)
         elif content_mime_type == "" or content_mime_type == "text/plain":
             raw_params = None
         else:
-            self.logger.warn("Unsupported content type:%s", content_mime_type)
+            self.log_warn("Unsupported content type:%s", content_mime_type)
         return raw_params
 
     def parse_result(self, result):
@@ -110,6 +110,9 @@ class Resource(object, metaclass=ResourceMeta):
 
     def log_info(self, *args, **kwargs):
         return self.logger.info(*args, **kwargs)
+
+    def log_warn(self, *args, **kwargs):
+        return self.logger.warn(*args, **kwargs)
 
     def log_error(self, *args, **kwargs):
         return self.logger.error(*args, **kwargs)

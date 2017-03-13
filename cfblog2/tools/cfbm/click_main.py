@@ -6,11 +6,11 @@
 import click
 
 from cfblog2.tools.cfbm.migrate import *
-from . import config
 
 
 @click.command("bm", short_help="Migrate other blog db to cfblog")
 def run_command():
+    from . import config
     fetcher = TypechoFetcher(config.fetcher)
     bm = BlogMigrate(fetcher)
     bm.start()

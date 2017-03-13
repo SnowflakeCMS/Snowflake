@@ -1,6 +1,6 @@
 import enum
-import os
-from flask import Flask
+from flask import Flask, request
+from .settings import Settings
 
 
 class CoreApp(Flask):
@@ -11,11 +11,10 @@ class CoreApp(Flask):
     def __init__(self, db, base_dir, *args, **kwargs):
         super(CoreApp, self).__init__(*args, **kwargs)
         self._project_base_dir = base_dir
-        self.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(base_dir, "db.sqlite")
-        self.config["SQLALCHEMY_COMMIT_ON_TEARDOWN"] = True
-        self.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
         self._db = db
+        self.before_request(self._before_each_request)
 
-    def get_setting(self, enum):
-        # For avoid import circle
-        setting_model = self.get_model("setting")
+    def _before_each_request(self):
+        request.settings = Settings()
+
+

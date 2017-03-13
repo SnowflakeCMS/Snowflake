@@ -2,10 +2,8 @@
 
 from http import HTTPStatus
 from flask import make_response
-from flask.views import View
 from flask.globals import request
-from flask import Flask, current_app, Blueprint, abort
-from cfblog2.restful.resource import Resource
+from flask import current_app, Blueprint, abort
 
 
 class FlaskSupport(Blueprint):
@@ -14,7 +12,6 @@ class FlaskSupport(Blueprint):
 
     def __init__(self, *args, **kwargs):
         super(FlaskSupport, self).__init__(*args, **kwargs)
-        self.after_request(self.on_after_each_request)
 
     def get_resource_register(self, res_cls):
         def __internal_register(rule, handle_func_name, methods, **options):
@@ -30,7 +27,6 @@ class FlaskSupport(Blueprint):
 
     def dispatch_request(self, res_cls, handle_func_name, *args, **kwargs):
         method_name = request.method.lower()
-
         res = res_cls(current_app.logger, self)
         content = request.get_data(as_text=True)
         content_mime_type = request.mimetype
@@ -39,21 +35,6 @@ class FlaskSupport(Blueprint):
         response = make_response(result_str)
         response.mime_type = result_mime_type
         return response
-
-    @staticmethod
-    def on_after_each_request(response):
-        # 临时处理跨域
-        h = response.headers
-        h["Access-Control-Allow-Origin"] = "*"
-        h["Access-Control-Max-Age"] = 21600
-        if "Allow" in h:
-            h["Access-Control-Allow-Methods"] = h["Allow"]
-        h["Access-Control-Allow-Headers"] = "Content-Type"
-        return response
-
-    @staticmethod
-    def log_debug(*args, **kwargs):
-        current_app.logger.debug(*args, **kwargs)
 
     @staticmethod
     def abort_403(msg=""):
