@@ -1,7 +1,7 @@
 # -*- encoding:utf-8 -*-
 from itsdangerous import TimedJSONWebSignatureSerializer, BadSignature
-from cfblog2.core.models import User
-from cfblog2.restful.resource import ResourceFilter
+from snowflake.core.models import User
+from snowflake.restful.resource import ResourceFilter
 from . import api, APICore, APICallException, RetCode
 
 

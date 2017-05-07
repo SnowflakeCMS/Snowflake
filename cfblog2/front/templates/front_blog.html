@@ -1,7 +1,0 @@
-{% extends "front_base.html" %}
-
-{% block content %}
-    <a href="{{ blog | url_for_blog }}"><h2>{{ blog.title }}</h2></a>
-    <hr/>
-    {% autoescape false %} <p>{{ blog.content | markdown_render }}<p> {% endautoescape %}
-{% endblock %}

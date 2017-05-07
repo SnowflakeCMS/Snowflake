@@ -6,12 +6,12 @@ from flask.globals import request
 from flask import current_app, Blueprint, abort
 
 
-class FlaskSupport(Blueprint):
+class APIManager(Blueprint):
     """Flask support of restful
     """
 
     def __init__(self, *args, **kwargs):
-        super(FlaskSupport, self).__init__(*args, **kwargs)
+        super(APIManager, self).__init__(*args, **kwargs)
 
     def get_resource_register(self, res_cls):
         def __internal_register(rule, handle_func_name, methods, **options):

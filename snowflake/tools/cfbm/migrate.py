@@ -5,8 +5,8 @@
 
 import pymysql
 
-from cfblog2 import db
-from cfblog2.core.models import ArticleEntry as ArticleModel
+from snowflake import db
+from snowflake.core.models import ArticleEntry as ArticleModel
 
 
 class DefaultLogger(object):

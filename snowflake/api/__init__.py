@@ -1,11 +1,11 @@
 # -*- encoding: utf-8 -*-
 
-from cfblog2.restful import Resource, ResourceManager
-from cfblog2.restful.supports.flask import FlaskSupport
+from snowflake.restful import Resource, ResourceManager
+from snowflake.restful import APIManager
 from .ret_code import RetCode
 
-flask_app = FlaskSupport("api", __name__)
-api = ResourceManager(flask_app)
+api_app = APIManager("api", __name__)
+api = ResourceManager(api_app)
 
 
 class APICallException(Exception):
@@ -50,8 +50,7 @@ class APICore(Resource):
         return APICore.auth_method(token)
 
 
-def init(app, url_prefix):
+def init(app):
     from . import auth, article
-    auth.set_config(app.secret_key, 7200)
     APICore.auth_method = auth.auth_method
-    app.register_blueprint(flask_app, url_prefix=url_prefix)
+    app.set_api_manager(api_app, auth)

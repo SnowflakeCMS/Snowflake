@@ -2,7 +2,7 @@
 import datetime
 import enum
 
-from cfblog2 import db
+from snowflake import db
 
 
 class Setting(db.Model):

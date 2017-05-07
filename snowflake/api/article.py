@@ -1,9 +1,9 @@
 # -*- encoding: utf-8 -*-
-from cfblog2 import db
-from cfblog2.api import APICore, APICallException
-from cfblog2.core.models import ArticleEntry as ArticleModel
-from cfblog2.core.utils import model_obj_to_dict
-from cfblog2.restful.resource import ResourceFilter
+from snowflake import db
+from snowflake.api import APICore, APICallException
+from snowflake.core.models import ArticleEntry as ArticleModel
+from snowflake.core.utils import model_obj_to_dict
+from snowflake.restful.resource import ResourceFilter
 from . import api
 
 
