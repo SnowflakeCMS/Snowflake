@@ -6,8 +6,9 @@ import enum
 import os
 
 from flask import Flask, request
+
 from snowflake.core import app_config
-from snowflake.core.settings import Settings
+from snowflake.core.models.settings import Settings
 
 
 # implements using flask
