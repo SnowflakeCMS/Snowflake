@@ -2,4 +2,9 @@
 # author:Shane Yao(future0906@gmail.com)
 # create@:2017/6/25
 
-from .create_text_entry import *
+
+class Queue(object):
+    def __init__(self):
+        pass
+
+

@@ -25,3 +25,10 @@ class Entry(db.Model):
         'polymorphic_identity': EntryType.Base,
         'polymorphic_on': entry_type
     }
+
+
+class ContentEntry(Entry):
+    """ User-generated entry"""
+    # 暂时使用字符串直接保存，效率略低
+    guid = db.Column(db.String(length=32))
+

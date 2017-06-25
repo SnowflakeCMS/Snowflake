@@ -2,14 +2,3 @@
 # author:Shane Yao(future0906@gmail.com)
 # create@:2017/5/12
 
-
-class Command(object):
-    def __init__(self, seq, executor):
-        self.seq = seq
-        self.executor = executor
-
-
-class CommandFactory(object):
-
-    def create_command(self, name, seq, create_params, exec_params):
-        pass

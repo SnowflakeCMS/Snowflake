@@ -5,4 +5,5 @@
 
 def init(app):
     from . import models
-
+    from .commands import CommandFactory
+    
