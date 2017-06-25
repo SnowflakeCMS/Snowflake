@@ -3,13 +3,13 @@
 # create@:2017/5/12
 
 
-class OpCommand(object):
+class Command(object):
     def __init__(self, seq, executor):
         self.seq = seq
         self.executor = executor
 
 
-class OpCommandFactory(object):
+class CommandFactory(object):
 
-    def create_command(self, name, seq, *args, **kwargs):
+    def create_command(self, name, seq, create_params, exec_params):
         pass
